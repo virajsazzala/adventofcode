@@ -1,0 +1,2 @@
+.. note::
+    I was too lazy to clean my code, so take a look at the scratch dir for ultra bad code
