@@ -94,12 +94,12 @@ def rank(h):
 
 
 def get_keys_by_value(idt, search_value):
-    input_dict = {}
+    id = {}
     for k, v in idt.items():
         tv = v[0]
-        input_dict.update({k: tv})
+        id.update({k: tv})
 
-    matching_keys = [key for key, value in input_dict.items() if value == search_value]
+    matching_keys = [key for key, value in id.items() if value == search_value]
     return matching_keys
 
 
@@ -115,14 +115,10 @@ def rank_hands(h):
     pass
 
 
-def reverse_rank_dict_by_list_order(input_dict):
-    # Sort the dictionary items based on the order of their value lists
-    sorted_items = sorted(input_dict.items(), key=lambda x: x[1], reverse=False)
-
-    # Create a new dictionary with keys mapped to their ranks
-    ranked_dict = {key: rank + 1 for rank, (key, _) in enumerate(sorted_items)}
-
-    return ranked_dict
+def rank_dt_li(id):
+    si = sorted(id.items(), key=lambda x: x[1], reverse=False)
+    rd = {key: rank + 1 for rank, (key, _) in enumerate(si)}
+    return rd
 
 
 final_ranks = {}
@@ -133,7 +129,7 @@ for v, o in ranks.values():
     for j in kbv:
         orders.update({j: ranks[j][1]})
 
-    ranked = reverse_rank_dict_by_list_order(orders)
+    ranked = rank_dt_li(orders)
 
     for k, x in ranked.items():
         final_ranks.update({k: x})
@@ -145,19 +141,16 @@ for k, v in ranks.items():
     br.update({k: tv})
 
 
-def rank_dict_with_ties(primary_dict, secondary_dict):
-    # Sort the dictionary items based on the primary values and then the secondary order
-    sorted_items = sorted(
-        primary_dict.items(), key=lambda x: (x[1], secondary_dict[x[0]])
+def rank_dt_mix(pd, sd):
+    si = sorted(
+        pd.items(), key=lambda x: (x[1], sd[x[0]])
     )
+    rd = {key: rank + 1 for rank, (key, _) in enumerate(si)}
 
-    # Create a new dictionary with keys mapped to their ranks
-    ranked_dict = {key: rank + 1 for rank, (key, _) in enumerate(sorted_items)}
-
-    return ranked_dict
+    return rd
 
 
-rwt = rank_dict_with_ties(br, final_ranks)
+rwt = rank_dt_mix(br, final_ranks)
 
 rs = 0
 for k, v in rwt.items():
